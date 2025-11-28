@@ -1,0 +1,4 @@
+thefuzz
+python-docx
+pandas
+ttkbootstrap
