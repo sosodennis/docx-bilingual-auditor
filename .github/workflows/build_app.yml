@@ -6,6 +6,10 @@ on:
     tags:
       - 'v*'
 
+# CRITICAL FIX: Grant write permission to the GITHUB_TOKEN
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Build on ${{ matrix.os }}
@@ -56,6 +60,7 @@ jobs:
         pyinstaller --noconfirm --onefile --windowed --name "DocxAuditor_v${{ steps.get_version.outputs.VERSION }}_Mac" --collect-all ttkbootstrap --add-data "version.txt:." main_gui.py
 
     # Release Step: Upload the built executable to the GitHub Release page
+    # This runs inside EACH job (Windows & Mac separately), uploading their respective files to the SAME Release.
     - name: Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
